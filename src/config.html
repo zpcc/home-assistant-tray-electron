@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>Config</title>
+  </head>
+  <body>
+    <label for="height">Window Height: </label>
+    <br />
+    <input type="text" id="height" value="" />
+    <br /><br />
+    <label for="width">Window Width: </label>
+    <br />
+    <input type="text" id="width" value="" />
+    <br /><br />
+    <label for="indexURL">Index URL: </label>
+    <br />
+    <input type="text" id="indexURL" value="" />
+    <br /><br />
+    <button id="save">Save</button>
+    <script type="text/javascript">
+      window.onload = function () {
+        const config = window.myAPI.readConfig();
+        document.getElementById("height").value = config.windowHeight;
+        document.getElementById("width").value = config.windowWidth;
+        document.getElementById("indexURL").value = config.indexURL;
+      };
+      document.getElementById("save").addEventListener("click", function () {
+        const height = document.getElementById("height").value;
+        const width = document.getElementById("width").value;
+        window.myAPI.writeWindowSize(height, width);
+        const indexURL = document.getElementById("indexURL").value;
+        window.myAPI.writeIndexURL(indexURL);
+        alert("Saved! Please restart the app.");
+      });
+    </script>
+    <style>
+      input {
+        width: 100%;
+      }
+      button {
+        width: 100%;
+      }
+    </style>
+  </body>
+</html>
