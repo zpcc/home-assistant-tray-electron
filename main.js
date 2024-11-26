@@ -1,16 +1,32 @@
 const { menubar } = require("menubar");
 
-const { app, Menu, Tray, BrowserWindow } = require("electron");
+const { app, Menu, Tray, BrowserWindow, ipcMain } = require("electron");
 
 const path = require("path");
 const iconPath = path.join(__dirname, "icon.ico");
 const modalPath = path.join("file://", __dirname, "src/config.html");
 
-const { readConfig } = require("./src/common.js");
+const { readConfig, writeWindowSize, writeIndexURL } = require("./src/common.js");
 const config = readConfig();
 
 // ref: https://github.com/maxogden/menubar/blob/master/examples/native-menu/main.js
 // ref: https://github.com/electron/electron-api-demos/blob/master/renderer-process/windows/create-window.js
+// ref: https://github.com/reZach/secure-electron-template/blob/master/docs/newtoelectron.md
+// ref: https://www.electronjs.org/zh/docs/latest/tutorial/ipc
+
+ipcMain.handle("read-config", () => {
+  return readConfig();
+});
+
+ipcMain.handle("write-window-size", (event, { windowHeight, windowWidth }) => {
+  writeWindowSize(windowHeight, windowWidth);
+  return true;
+});
+
+ipcMain.handle("write-index-url", (event, { indexURL }) => {
+  writeIndexURL(indexURL);
+  return true;
+});
 
 function createWindow() {
   let win = new BrowserWindow({
@@ -32,6 +48,13 @@ app.on("ready", () => {
       label: "Config",
       click: () => {
         createWindow();
+      },
+    },
+    {
+      label: "Restart",
+      click: () => {
+        app.relaunch()
+        app.exit()
       },
     },
     {

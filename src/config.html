@@ -17,18 +17,18 @@
     <br /><br />
     <button id="save">Save</button>
     <script type="text/javascript">
-      window.onload = function () {
-        const config = window.myAPI.readConfig();
+      window.onload = async function () {
+        const config = await window.myAPI.readConfig();
         document.getElementById("height").value = config.windowHeight;
         document.getElementById("width").value = config.windowWidth;
         document.getElementById("indexURL").value = config.indexURL;
       };
-      document.getElementById("save").addEventListener("click", function () {
+      document.getElementById("save").addEventListener("click", async function () {
         const height = document.getElementById("height").value;
         const width = document.getElementById("width").value;
-        window.myAPI.writeWindowSize(height, width);
+        await window.myAPI.writeWindowSize(height, width);
         const indexURL = document.getElementById("indexURL").value;
-        window.myAPI.writeIndexURL(indexURL);
+        await window.myAPI.writeIndexURL(indexURL);
         alert("Saved! Please restart the app.");
       });
     </script>
