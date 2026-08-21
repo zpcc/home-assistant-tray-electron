@@ -4,7 +4,7 @@ const { app, Menu, Tray, BrowserWindow, ipcMain } = require("electron");
 
 const path = require("path");
 const iconPath = path.join(__dirname, "icon.ico");
-const modalPath = path.join("file://", __dirname, "src/config.html");
+const modalPath = `file://${path.join(__dirname, "src/config.html")}`;
 
 const { readConfig, writeWindowSize, writeIndexURL } = require("./src/common.js");
 const config = readConfig();
@@ -72,7 +72,7 @@ app.on("ready", () => {
   console.log(`height: ${height}, width: ${width}`);
 
   if (!indexURL.startsWith("http")) {
-    indexURL = path.join("file://", __dirname, "src/index.html");
+    indexURL = `file://${path.join(__dirname, "src/index.html")}`;
   }
 
   const mb = menubar({
@@ -88,4 +88,7 @@ app.on("ready", () => {
   mb.on("ready", () => {
     console.log("Menubar app is ready.");
   });
+});
+
+app.on("window-all-closed", () => {
 });
