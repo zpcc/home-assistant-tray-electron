@@ -88,6 +88,20 @@ app.on("ready", () => {
   mb.on("ready", () => {
     console.log("Menubar app is ready.");
   });
+  mb.on("show", () => {
+    const win = mb.window;
+    if (!win || win.isDestroyed()) return;
+    cfg = readConfig();
+    const [width, height] = [parseInt(config.windowWidth), parseInt(config.windowHeight)];
+    // const [width, height] = win.getSize();
+    win.setSize(width + 1, height, false);
+    setTimeout(() => {
+      if (!win.isDestroyed()) {
+        win.setSize(width, height, false);
+      }
+    }, 10);
+    // console.log(`${width}, ${height}`);
+  });
 });
 
 app.on("window-all-closed", () => {
